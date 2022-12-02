@@ -7,25 +7,47 @@
  */
 
 import React, { useState } from "react";
-import { Button, SafeAreaView, Text, View, StyleSheet } from "react-native";
+import {
+  Button,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  Platform,
+  Text,
+  View,
+  StyleSheet,
+} from "react-native";
 import Box from "./components/Box";
 import Counter from "./components/Counter";
+import DateHead from "./components/DateHead";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import AddTodo from "./components/AddTodo";
+import Empty from "./components/Empty";
 
 const App = () => {
-  const [count, setCount] = useState(0);
-
-  const onIncrease = () => setCount(count + 1);
-  const onDecrease = () => setCount(count - 1);
-
+  const today = new Date();
+  console.log(today);
   return (
-    <SafeAreaView style={styles.full}>
-      <Counter count={count} onIncrease={onIncrease} onDecrease={onDecrease} />
-    </SafeAreaView>
+    <SafeAreaProvider>
+      <SafeAreaView edges={["bottom"]} style={styles.block}>
+        <KeyboardAvoidingView
+          behavior={Platform.select({ ios: "padding", android: undefined })}
+          style={styles.avoid}
+        >
+          <DateHead date={today} />
+          <Empty />
+          <AddTodo />
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 };
 
 const styles = StyleSheet.create({
-  full: {
+  block: {
+    flex: 1,
+    backgroundColor: "white",
+  },
+  avoid: {
     flex: 1,
   },
 });
